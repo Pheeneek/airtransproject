@@ -31,7 +31,7 @@ class Airport(models.Model):
     timezone = models.IntegerField()
 
     def __str__(self):
-        return f"{self.airport_code} - {self.airport_name}, {self.city}, {self.coordinates}, {self.timezone}"
+        return f"{self.airport_name}, {self.city}"
 
 
 class Flight(models.Model):
@@ -89,12 +89,12 @@ class TicketFlight(models.Model):
         ("3", "Первый")
     )
     ticket_no = models.ForeignKey("Ticket", to_field="ticket_no", on_delete=models.CASCADE)
-    flight_id = models.ForeignKey("Flight", on_delete=models.CASCADE, unique=True)
+    flight_id = models.OneToOneField("Flight", on_delete=models.CASCADE)
     fare_condition = models.CharField(max_length=1, choices=FARE_CONDITION)
     amount = models.FloatField()
 
     def __str__(self):
-        return f"{self.ticket_no}, {self.fare_condition}"
+        return f"{self.ticket_no}, {self.FARE_CONDITION}"
 
     class Meta:
         unique_together = (('ticket_no', 'flight_id'),)
